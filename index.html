@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenProve: Learning to Generate Text with Fine-Grained Provenance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --accent-color: #22d3ee;
+            --secondary-color: #a78bfa;
+            --bg-color: #f8fafc;
+            --text-color: #1e2937;
+            --light-text: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 10px 30px -10px rgba(34, 211, 238, 0.15);
+            --hover-shadow: 0 25px 50px -12px rgba(167, 139, 250, 0.25);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+        }
+        
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated subtle background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(34, 211, 238, 0.12) 0px, transparent 60px),
+                radial-gradient(circle at 80% 70%, rgba(167, 139, 250, 0.12) 0px, transparent 80px),
+                radial-gradient(circle at 40% 80%, rgba(34, 211, 238, 0.08) 0px, transparent 50px);
+            z-index: -1;
+            animation: floatPattern 25s ease infinite;
+        }
+
+        @keyframes floatPattern {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(15px, -15px); }
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Enhanced Header - Hero with depth */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 60px 40px;
+            border-radius: 24px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg, transparent, rgba(34, 211, 238, 0.15), transparent);
+            transform: rotate(25deg);
+            animation: shine 8s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-150%) rotate(25deg); }
+            100% { transform: translateX(150%) rotate(25deg); }
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .authors {
+            font-size: 1.35rem;
+            color: var(--secondary-color);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .affiliations {
+            font-size: 1.05rem;
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        /* Beautified Navigation */
+        .nav-container {
+            background: linear-gradient(90deg, var(--primary-color), #1e2937);
+            box-shadow: 0 8px 25px -8px rgba(15, 23, 42, 0.4);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(16px);
+            border-bottom: 3px solid var(--accent-color);
+        }
+        
+        nav {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.4rem;
+            text-decoration: none;
+        }
+
+        .nav-logo i {
+            font-size: 2rem;
+            color: var(--accent-color);
+            filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.6));
+        }
+
+        nav .links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-color), var(--secondary-color));
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(34, 211, 238, 0.3);
+        }
+
+        nav a:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Vibrant modern buttons */
+        .links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            box-shadow: var(--card-shadow);
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .btn:hover {
+            border-color: var(--accent-color);
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-4px) scale(1.05);
+            color: var(--accent-color);
+        }
+
+        .btn i {
+            font-size: 1.4rem;
+        }
+
+        /* Section styling with depth */
+        section {
+            margin-bottom: 80px;
+            scroll-margin-top: 100px;
+            background: var(--glass-bg);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            border: 1px solid rgba(34, 211, 238, 0.15);
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(to right, var(--accent-color), var(--secondary-color));
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+        }
+
+        h2 {
+            font-size: 2.4rem;
+            color: var(--primary-color);
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        h2 .header-icon {
+            font-size: 2.6rem;
+            color: var(--accent-color);
+            filter: drop-shadow(0 4px 8px rgba(34, 211, 238, 0.4));
+        }
+
+        h3 {
+            font-size: 1.65rem;
+            color: var(--secondary-color);
+            margin: 40px 0 18px;
+        }
+
+        /* Abstract with special framing */
+        .abstract-box {
+            background: white;
+            padding: 48px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px -15px rgba(34, 211, 238, 0.2);
+            border-left: 8px solid var(--accent-color);
+            position: relative;
+        }
+
+        /* Feature cards with 3D hover */
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 28px;
+            margin: 48px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 40%;
+            height: 300%;
+            background: linear-gradient(135deg, transparent, rgba(167, 139, 250, 0.15), transparent);
+            transform: rotate(30deg);
+            opacity: 0;
+        }
+
+        .feature-card:hover::after {
+            animation: cardShimmer 1.2s ease;
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) rotate(2deg);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .feature-card h3 i {
+            color: var(--accent-color);
+        }
+
+        /* Tables - modern & colorful */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            background: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 18px 20px;
+            text-align: center;
+        }
+
+        th {
+            background: linear-gradient(90deg, var(--primary-color), #1e2937);
+            color: white;
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #ecfeff;
+            transform: scale(1.02);
+        }
+
+        .highlight-row {
+            background: linear-gradient(90deg, #ecfeff, #e0f2fe) !important;
+            font-weight: 700;
+            color: #0f766e;
+        }
+
+        /* Results visualization grid */
+        .results-viz {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 32px;
+            margin: 48px 0;
+        }
+
+        .viz-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 100px;
+            padding: 40px;
+            background: linear-gradient(90deg, var(--primary-color), #1e2937);
+            color: white;
+            border-radius: 24px;
+            font-size: 1.05rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            section { padding: 32px 20px; }
+            nav { flex-direction: column; }
+        }
+
+        /* Additional animation for cards */
+        @keyframes cardShimmer {
+            100% { transform: translateX(200%) rotate(30deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-container">
+        <nav>
+            <!-- Logo -->
+            <a href="#" class="nav-logo">
+                <i class="fas fa-brain"></i>
+                GenProve
+            </a>
+            
+            <div class="links">
+                <a href="#abstract"><i class="fas fa-book-open"></i> Abstract</a>
+                <a href="#contributions"><i class="fas fa-gem"></i> Contributions</a>
+                <a href="#refine"><i class="fas fa-database"></i> ReFInE Dataset</a>
+                <a href="#genprove"><i class="fas fa-cogs"></i> GenProve Framework</a>
+                <a href="#results"><i class="fas fa-chart-bar"></i> Results</a>
+                <a href="#citation"><i class="fas fa-quote-right"></i> Citation</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>GenProve</h1>
+            <p style="font-size:1.4rem; color:#64748b; margin-bottom:20px;">Learning to Generate Text with Fine-Grained Provenance</p>
+            
+            <div class="authors">
+                Jingxuan Wei, Xingyue Wang, Yanghaoyu Liao, Jie Dong, Yuchen Liu, Caijun Jia, Bihui Yu, Junnan Zhu
+            </div>
+            <div class="affiliations">
+                Shenyang Institute of Computing Technology, Chinese Academy of Sciences<br>
+                MAIS, Institute of Automation, Chinese Academy of Sciences<br>
+                University of Chinese Academy of Sciences
+            </div>
+
+            <div class="links">
+                <a href="https://arxiv.org/abs/2601.04932" class="btn" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Paper (arXiv)
+                </a>
+                <a href="https://github.com/yanghaoyuliao/GenProve" class="btn" target="_blank">
+                    <i class="fab fa-github"></i> Code
+                </a>
+                <a href="https://huggingface.co/liaao/Qwen3-8B_SFT_100_Steps" class="btn" target="_blank">
+                    <i class="fas fa-robot"></i> Model (HuggingFace)
+                </a>
+            </div>
+        </header>
+
+        <section id="abstract">
+            <div class="abstract-box">
+                <h2><span class="header-icon"><i class="fas fa-quote-left"></i></span> Abstract</h2>
+                <p>Large language models (LLM) often hallucinate, and while adding citations is a common solution, it is frequently insufficient for accountability as users struggle to verify how a cited source supports a generated claim. Existing methods are typically coarse-grained and fail to distinguish between direct quotes and complex reasoning.</p>
+                
+                <div class="figure" style="margin:40px 0; padding:20px; background:#fff; border-radius:16px; box-shadow:0 15px 35px -10px rgba(34,211,238,0.25);">
+                    <img src="./intro.jpg" alt="Concept Comparison: Coarse vs. Fine-Grained Provenance" style="max-width:100%; border-radius:12px;">
+                    <div class="figure-caption" style="margin-top:18px; font-style:italic; color:#64748b;">
+                        Figure 1: Illustration of the concept gap. Left: Standard retrieval-augmented models with coarse, document-level citation. Right: GenProve with generation-time, sentence-level, and typed provenance (Quotation, Compression, Inference).
+                    </div>
+                </div>
+
+                <p>In this paper, we introduce <strong>Generation-time Fine-grained Provenance</strong>, a task where models must generate fluent answers while simultaneously producing structured, sentence-level provenance triples.</p>
+                
+                <p>To enable this, we present <strong>ReFInE</strong> (Relation-aware Fine-grained Interpretability &amp; Evidence), a dataset featuring expert-verified annotations that distinguish between Quotation, Compression, and Inference. Building on ReFInE, we propose <strong>GenProve</strong>, a framework that combines Supervised Fine-Tuning (SFT) with Group Relative Policy Optimization (GRPO). By optimizing a composite reward for answer fidelity and provenance correctness, GenProve significantly outperforms 14 strong LLMs in joint evaluation.</p>
+                
+                <div class="figure" style="margin:40px 0; padding:20px; background:#fff; border-radius:16px; box-shadow:0 15px 35px -10px rgba(167,139,250,0.25);">
+                    <img src="https://via.placeholder.com/900x420/a78bfa/0f172a?text=GenProve+Performance+Gains" alt="GenProve Performance Improvement" style="max-width:100%; border-radius:12px;">
+                    <div class="figure-caption" style="margin-top:18px; font-style:italic; color:#64748b;">
+                        Figure 2: GenProve achieves state-of-the-art performance across multiple metrics, with particularly strong gains in provenance accuracy.
+                    </div>
+                </div>
+                
+                <p>Crucially, our analysis uncovers a reasoning gap where models excel at surface-level quotation but struggle significantly with inference-based provenance, suggesting that verifiable reasoning remains a frontier challenge distinct from surface-level citation.</p>
+            </div>
+        </section>
+
+        <section id="contributions">
+            <h2><span class="header-icon"><i class="fas fa-gem"></i></span> Key Contributions</h2>
+            
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <h3><i class="fas fa-bullseye"></i> Novel Task Formulation</h3>
+                    <p>We define <strong>Generation-time Fine-grained Provenance</strong>, shifting from coarse document-level citations to sentence-level attribution with explicit relation typing.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-database"></i> ReFInE Dataset</h3>
+                    <p>We release the first expert-annotated QA dataset that provides dense, typed provenance supervision for multi-document generation.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-cogs"></i> GenProve Framework</h3>
+                    <p>We propose an integrated SFT with GRPO alignment approach to master structured provenance generation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="refine">
+            <h2><span class="header-icon"><i class="fas fa-table"></i></span> The ReFInE Dataset</h2>
+            <p>Most existing benchmarks are designed for analysis after generation or lack structured supervision on evidence types. To bridge this gap, we construct ReFInE (Relation-aware Fine-grained Interpretability &amp; Evidence). Built via a rigorous human-in-the-loop pipeline, the dataset features three distinct provenance relations:</p>
+            
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <h3><i class="fas fa-quote-right"></i> Quotation</h3>
+                    <p>The answer sentence partially or fully copies the wording of the source sentence.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-compress-arrows-alt"></i> Compression</h3>
+                    <p>The answer sentence summarizes or paraphrases information distributed across source sentences.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-brain"></i> Inference</h3>
+                    <p>The answer sentence states a conclusion logically supported by source sentences.</p>
+                </div>
+            </div>
+            
+            <div class="figure" style="margin:40px 0; padding:20px; background:#fff; border-radius:16px; box-shadow:0 15px 35px -10px rgba(34,211,238,0.25);">
+                <img src="https://via.placeholder.com/900x420/0f172a/white?text=ReFInE+Dataset+Construction+Pipeline" alt="ReFInE Dataset Construction" style="max-width:100%; border-radius:12px;">
+                <div class="figure-caption" style="margin-top:18px; font-style:italic; color:#64748b;">
+                    Figure 3: The three-stage construction pipeline of ReFInE ensures high-quality provenance supervision through preprocessing, LLM-assisted annotation, and expert validation.
+                </div>
+            </div>
+            
+            <h3>Dataset Statistics</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Split</th>
+                            <th>Instances</th>
+                            <th>Avg. Provenance Tags</th>
+                            <th>Avg. Triples per Tag</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SFT</td>
+                            <td>12,540</td>
+                            <td>3.96</td>
+                            <td>1.98</td>
+                        </tr>
+                        <tr>
+                            <td>GRPO</td>
+                            <td>5,256</td>
+                            <td>4.12</td>
+                            <td>2.05</td>
+                        </tr>
+                        <tr>
+                            <td>EVAL</td>
+                            <td>4,838</td>
+                            <td>3.87</td>
+                            <td>1.92</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="genprove">
+            <h2><span class="header-icon"><i class="fas fa-project-diagram"></i></span> The GenProve Framework</h2>
+            <p>We develop GenProve, a two-step training framework that enables a model to generate answers with fine-grained provenance. It consists of:</p>
+            
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <h3><i class="fas fa-graduation-cap"></i> Supervised Fine-Tuning (SFT)</h3>
+                    <p>Trains the base model to follow instructions and emit well-formed provenance annotations with fluent answers.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-robot"></i> GRPO-based Reinforcement Learning</h3>
+                    <p>Optimizes a composite reward evaluating both content quality and provenance accuracy.</p>
+                </div>
+            </div>
+
+            <div class="figure" style="margin:40px 0; padding:20px; background:#fff; border-radius:16px; box-shadow:0 15px 35px -10px rgba(167,139,250,0.25);">
+                <img src="https://via.placeholder.com/900x420/22d3ee/0f172a?text=GenProve+Framework+Overview" alt="GenProve Training Framework" style="max-width:100%; border-radius:12px;">
+                <div class="figure-caption" style="margin-top:18px; font-style:italic; color:#64748b;">
+                    Figure 4: Overview of the GenProve framework. The base LLM is first fine-tuned via SFT and then optimized using Group Relative Policy Optimization (GRPO) with a composite reward function.
+                </div>
+            </div>
+            
+            <h3>Reward Design</h3>
+            <p>The composite reward combines two components:</p>
+            <ul style="font-size:1.1rem; padding-left:30px;">
+                <li><strong>Content Similarity Reward</strong>: Encourages semantic alignment with reference answers</li>
+                <li><strong>Provenance F1 Reward</strong>: Encourages generating correct provenance triples and relation types</li>
+            </ul>
+        </section>
+
+        <section id="results">
+            <h2><span class="header-icon"><i class="fas fa-chart-line"></i></span> Experimental Results</h2>
+            <p>We evaluate 14 LLMs, covering both open- and closed-source systems. Results show that GenProve establishes a new state-of-the-art, significantly outperforming competitors in both answer quality and provenance accuracy.</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Model</th>
+                            <th>ROUGE-L</th>
+                            <th>BLEU</th>
+                            <th>Provenance F1</th>
+                            <th>Format (%)</th>
+                            <th>LLM-as-judge (1-5)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Baichuan2-7B</td>
+                            <td>34.68</td>
+                            <td>19.41</td>
+                            <td>3.04</td>
+                            <td>26.60</td>
+                            <td>0.78</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Vicuna-7b-v1.5</td>
+                            <td>38.83</td>
+                            <td>24.37</td>
+                            <td>6.70</td>
+                            <td>92.40</td>
+                            <td>1.10</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">InternLM2.5-7B</td>
+                            <td>47.79</td>
+                            <td>30.60</td>
+                            <td>11.94</td>
+                            <td>80.24</td>
+                            <td>1.67</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Hunyuan-7B</td>
+                            <td>39.91</td>
+                            <td>24.70</td>
+                            <td>21.43</td>
+                            <td>90.88</td>
+                            <td>1.72</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Yi-1.5-9B</td>
+                            <td>48.26</td>
+                            <td>30.11</td>
+                            <td>20.11</td>
+                            <td>96.81</td>
+                            <td>1.80</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Llama-3.1-8B</td>
+                            <td>47.71</td>
+                            <td>26.36</td>
+                            <td>20.05</td>
+                            <td>99.85</td>
+                            <td>2.00</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">GLM-4-9B</td>
+                            <td>50.33</td>
+                            <td>32.62</td>
+                            <td>32.79</td>
+                            <td>100.0</td>
+                            <td>2.16</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Qwen3-8B</td>
+                            <td>51.80</td>
+                            <td>35.56</td>
+                            <td>32.53</td>
+                            <td>100.0</td>
+                            <td>2.25</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Gemma-3-12B</td>
+                            <td>48.97</td>
+                            <td>32.13</td>
+                            <td>34.03</td>
+                            <td>100.0</td>
+                            <td>2.47</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Qwen3-14B</td>
+                            <td>52.85</td>
+                            <td>35.70</td>
+                            <td>41.16</td>
+                            <td>99.70</td>
+                            <td>2.59</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">GLM-4.5-355B</td>
+                            <td>49.81</td>
+                            <td>35.05</td>
+                            <td>44.55</td>
+                            <td>98.63</td>
+                            <td>2.63</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Kimi</td>
+                            <td>49.33</td>
+                            <td>31.24</td>
+                            <td>29.70</td>
+                            <td>99.09</td>
+                            <td>2.20</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">GPT-5</td>
+                            <td>41.79</td>
+                            <td>20.01</td>
+                            <td>17.88</td>
+                            <td>99.85</td>
+                            <td>2.23</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Gemini 2.5 Pro</td>
+                            <td>48.75</td>
+                            <td>31.77</td>
+                            <td>42.92</td>
+                            <td>100.0</td>
+                            <td>2.57</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td style="text-align:left;">GenProve (Ours)</td>
+                            <td>57.25</td>
+                            <td>42.22</td>
+                            <td>51.21</td>
+                            <td>99.85</td>
+                            <td>3.14</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="results-viz">
+                <div class="viz-card">
+                    <h3>Performance by Relation Type</h3>
+                    <img src="https://via.placeholder.com/520x320/22d3ee/0f172a?text=Relation+Type+Performance+Heatmap" alt="Performance by Relation Type" style="max-width:100%; border-radius:12px;">
+                    <p style="margin-top:16px;">GenProve shows strongest performance across all three relations, with largest gains on Compression and Inference.</p>
+                </div>
+                
+                <div class="viz-card">
+                    <h3>Training Dynamics</h3>
+                    <img src="https://via.placeholder.com/520x320/a78bfa/0f172a?text=GRPO+Training+Progress" alt="GRPO Training Dynamics" style="max-width:100%; border-radius:12px;">
+                    <p style="margin-top:16px;">Both component rewards increase and stabilize during GRPO alignment, indicating coordinated optimization.</p>
+                </div>
+            </div>
+            
+            <h3>Ablation Study</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model Variant</th>
+                            <th>BLEU</th>
+                            <th>BERTScore</th>
+                            <th>F1</th>
+                            <th>Format</th>
+                            <th>Judge</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight-row">
+                            <td>GenProve</td>
+                            <td>42.22</td>
+                            <td>61.98</td>
+                            <td>51.21</td>
+                            <td>99.85</td>
+                            <td>3.14</td>
+                        </tr>
+                        <tr>
+                            <td>w/o Prov Reward</td>
+                            <td>11.94</td>
+                            <td>46.96</td>
+                            <td>24.67</td>
+                            <td>96.66</td>
+                            <td>2.20</td>
+                        </tr>
+                        <tr>
+                            <td>w/o Sim Reward</td>
+                            <td>24.60</td>
+                            <td>44.50</td>
+                            <td>60.32</td>
+                            <td>95.74</td>
+                            <td>2.71</td>
+                        </tr>
+                        <tr>
+                            <td>w/o GRPO</td>
+                            <td>41.82</td>
+                            <td>60.70</td>
+                            <td>50.48</td>
+                            <td>99.70</td>
+                            <td>2.62</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="citation">
+            <h2><span class="header-icon"><i class="fas fa-book"></i></span> Citation</h2>
+            <p>If you find our work helpful, please consider citing:</p>
+            <pre class="bibtex" style="background:#0f172a; color:#e0f2fe; padding:32px; border-radius:20px; font-family:monospace; overflow-x:auto; box-shadow:0 15px 35px -10px rgba(15,23,42,0.6);"><code>@article{wei2026genprove,
+  title={GenProve: Learning to Generate Text with Fine-Grained Provenance},
+  author={Wei, Jingxuan and Wang, Xingyue and Liao, Yanghaoyu and Dong, Jie and Liu, Yuchen and Jia, Caijun and Yu, Bihui and Zhu, Junnan},
+  journal={arXiv preprint arXiv:2601.04932},
+  year={2026}
+}</code></pre>
+        </section>
+
+        <footer>
+            <p>Project Page for GenProve • Created in 2026 • <i class="fas fa-heart" style="color:#ec4899;"></i> Made with vibrant AI passion</p>
+        </footer>
+    </div>
+
+    <script>
+        // Subtle scroll animation for sections
+        document.querySelectorAll('section').forEach((section, i) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            setTimeout(() => {
+                section.style.transition = `all 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${i * 80}ms`;
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, 300);
+        });
+    </script>
+</body>
+</html>
