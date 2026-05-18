@@ -115,16 +115,39 @@
         }
 
         .authors {
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             color: var(--secondary-color);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .authors sup {
+            font-size: 0.7em;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .authors .equal {
+            color: #f59e0b;
+            font-weight: 700;
+        }
+
+        .authors .corr {
+            color: #ef4444;
+            font-weight: 700;
         }
 
         .affiliations {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             color: var(--light-text);
-            line-height: 1.6;
+            line-height: 1.7;
+        }
+
+        .aff-note {
+            font-size: 0.85rem;
+            color: var(--light-text);
+            margin-top: 6px;
         }
 
         /* Beautified Navigation */
@@ -220,28 +243,64 @@
         .btn {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 16px 32px;
-            background: white;
-            color: var(--primary-color);
+            gap: 10px;
+            padding: 14px 28px;
+            color: white;
             text-decoration: none;
-            border-radius: 9999px;
+            border-radius: 16px;
             font-weight: 700;
-            font-size: 1.05rem;
-            box-shadow: var(--card-shadow);
-            border: 3px solid transparent;
+            font-size: 1rem;
+            border: none;
             position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.25) 0%, transparent 70%);
+        }
+
+        .btn:hover::after {
+            opacity: 1;
         }
 
         .btn:hover {
-            border-color: var(--accent-color);
-            box-shadow: var(--hover-shadow);
-            transform: translateY(-4px) scale(1.05);
-            color: var(--accent-color);
+            transform: translateY(-3px) scale(1.03);
         }
 
-        .btn i {
-            font-size: 1.4rem;
+        .btn:active {
+            transform: translateY(0) scale(0.97);
+            transition: transform 0.1s ease;
+        }
+
+        .btn-paper {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            box-shadow: 0 6px 20px -6px rgba(99, 102, 241, 0.5);
+        }
+        .btn-paper:hover {
+            box-shadow: 0 12px 30px -8px rgba(139, 92, 246, 0.6);
+        }
+
+        .btn-code {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            box-shadow: 0 6px 20px -6px rgba(30, 41, 59, 0.5);
+        }
+        .btn-code:hover {
+            box-shadow: 0 12px 30px -8px rgba(51, 65, 85, 0.6);
+        }
+
+        .btn-model {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            box-shadow: 0 6px 20px -6px rgba(245, 158, 11, 0.5);
+        }
+        .btn-model:hover {
+            box-shadow: 0 12px 30px -8px rgba(239, 68, 68, 0.55);
         }
 
         /* Section styling with depth */
@@ -493,24 +552,32 @@
             <p style="font-size:1.4rem; color:#64748b; margin-bottom:20px;">Learning to Generate Text with Fine-Grained Provenance</p>
             
             <div class="authors">
-                Jingxuan Wei, Xingyue Wang, Yanghaoyu Liao, Jie Dong, Yuchen Liu, Caijun Jia, Bihui Yu, Junnan Zhu
+                Jingxuan Wei<sup>1,2,4</sup><span class="equal">†</span>&ensp;
+                Xingyue Wang<sup>2,4</sup><span class="equal">†</span>&ensp;
+                Yanghaoyu Liao<sup>2,4</sup><span class="equal">†</span>&ensp;
+                Jie Dong<sup>2,4</sup><span class="equal">†</span>&ensp;
+                Yuchen Liu<sup>2,4</sup>&ensp;
+                Caijun Jia<sup>2,4</sup>&ensp;
+                Bihui Yu<sup>2,4</sup>&ensp;
+                Junnan Zhu<sup>3</sup><span class="corr">*</span>
             </div>
             <div class="affiliations">
-                Key Laboratory of Computing Power Network and Information Security, Ministry of Education, Shandong Computer Science Center (National Supercomputer Center in Jinan), Qilu University of Technology (Shandong Academy of Sciences)<br>
-                Shenyang Institute of Computing Technology, Chinese Academy of Sciences<br>
-                MAIS, Institute of Automation, Chinese Academy of Sciences<br>
-                University of Chinese Academy of Sciences
+                <p><sup>1</sup> Key Laboratory of Computing Power Network and Information Security, Ministry of Education, Shandong Computer Science Center (National Supercomputer Center in Jinan), Qilu University of Technology (Shandong Academy of Sciences)</p>
+                <p><sup>2</sup> Shenyang Institute of Computing Technology, Chinese Academy of Sciences</p>
+                <p><sup>3</sup> MAIS, Institute of Automation, Chinese Academy of Sciences</p>
+                <p><sup>4</sup> University of Chinese Academy of Sciences</p>
             </div>
+            <p class="aff-note"><span class="equal">†</span> Equal contribution &emsp; <span class="corr">*</span> Corresponding author</p>
 
             <div class="links">
-                <a href="https://arxiv.org/abs/2601.04932" class="btn" target="_blank">
-                    <i class="ph-duotone ph-file-text"></i> Paper (arXiv)
+                <a href="https://arxiv.org/abs/2601.04932" class="btn btn-paper" target="_blank">
+                    <i class="ph-duotone ph-file-text"></i> Paper
                 </a>
-                <a href="https://github.com/yanghaoyuliao/GenProve" class="btn" target="_blank">
-                    <i class="ph-duotone ph-code"></i> Code
+                <a href="https://github.com/yanghaoyuliao/GenProve" class="btn btn-code" target="_blank">
+                    <i class="ph-duotone ph-github-logo"></i> Code
                 </a>
-                <a href="https://huggingface.co/liaao/Qwen3-8B_SFT_100_Steps" class="btn" target="_blank">
-                    <i class="ph-duotone ph-robot"></i> Model (HuggingFace)
+                <a href="https://huggingface.co/liaao/Qwen3-8B_SFT_100_Steps" class="btn btn-model" target="_blank">
+                    <i class="ph-duotone ph-brain"></i> Model
                 </a>
             </div>
         </header>
@@ -771,12 +838,18 @@
             </div>
 
             <h3>Example Instances</h3>
-            <p>Each ReFInE instance pairs a user question with multiple source documents and a reference answer, where every sentence carries a provenance annotation linking it to source sentences.</p>
+            <p>Each ReFInE instance pairs a user question with multiple source documents and a reference answer, where every sentence carries a provenance annotation linking it to source sentences. Below are examples illustrating the three relation types.</p>
 
             <div class="feature-cards">
                 <div class="feature-card" style="border-left: 6px solid #22d3ee;">
                     <h3><i class="ph-duotone ph-chats"></i> Quotation Example</h3>
                     <p style="font-size:0.95rem; color:#64748b; margin-bottom:12px;"><strong>Q:</strong> When was the Xbox One released?</p>
+                    <div style="background:#e0f2fe; padding:14px; border-radius:10px; margin-bottom:12px; font-size:0.88rem; line-height:1.6;">
+                        <p style="font-weight:700; color:#0369a1; margin-bottom:6px;">Source Documents:</p>
+                        <p><strong>Doc[0]:</strong> [0] The Xbox One was released in North America, Europe, and Australia on November 22, 2013…and was later released in 26 other markets in 2014. [1] It had two mid-generation upgrades…</p>
+                        <p><strong>Doc[1]:</strong> [0] The PlayStation 4 was released on November 15, 2013, in North America and… [1] Section: Home consoles…</p>
+                        <p><strong>Doc[2]:</strong> [0] ReCore was first revealed at E3 2015 during Microsoft… [1] At the conclusion of the debut trailer Microsoft…</p>
+                    </div>
                     <div style="background:#f0fdfa; padding:16px; border-radius:12px; font-size:0.92rem; line-height:1.6;">
                         <p><strong>A:</strong> The Xbox One was released on November 22, 2013, in North America, Europe, and Australia. <code style="background:#22d3ee; color:#0f172a; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[0], Sen[0], Quotation)</code></p>
                         <p>It was later released in 26 other markets in 2014. <code style="background:#22d3ee; color:#0f172a; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[0], Sen[0], Quotation)</code></p>
@@ -786,16 +859,28 @@
                 <div class="feature-card" style="border-left: 6px solid #a78bfa;">
                     <h3><i class="ph-duotone ph-arrows-in"></i> Compression Example</h3>
                     <p style="font-size:0.95rem; color:#64748b; margin-bottom:12px;"><strong>Q:</strong> Who hosted the Late Late Show after Tom Snyder?</p>
+                    <div style="background:#ede9fe; padding:14px; border-radius:10px; margin-bottom:12px; font-size:0.88rem; line-height:1.6;">
+                        <p style="font-weight:700; color:#6d28d9; margin-bottom:6px;">Source Documents:</p>
+                        <p><strong>Doc[0]:</strong> [0] The Late Late Show (American talk… [1] with host Tom Snyder, followed by Craig Kilborn and Craig Ferguson. [2] It is currently hosted by James Corden…</p>
+                        <p><strong>Doc[1]:</strong> [0] In 1986, the Fox network introduced The Late Show… [1] After a moderate start, ratings for the show sagged…</p>
+                        <p><strong>Doc[2]:</strong> [0] Tom Snyder hosted the program from its inception… [1] The choice of Snyder as host was made by David…</p>
+                    </div>
                     <div style="background:#f5f3ff; padding:16px; border-radius:12px; font-size:0.92rem; line-height:1.6;">
-                        <p><strong>A:</strong> After Tom Snyder stepped down, The Late Late Show experienced several hosting transitions, with Craig Kilborn and later Craig Ferguson successively taking over, before eventually settling on James Corden. <code style="background:#a78bfa; color:#fff; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[0], Sen[1], Compression), (Doc[0], Sen[2], Compression)</code></p>
+                        <p><strong>A:</strong> After Tom Snyder stepped down as the original host, The Late Late Show experienced several hosting transitions, with Craig Kilborn and later Craig Ferguson successively taking over the program, before eventually settling on its current host, James Corden, who continues to lead the show today. <code style="background:#a78bfa; color:#fff; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[0], Sen[1], Compression), (Doc[0], Sen[2], Compression)</code></p>
                     </div>
                 </div>
 
                 <div class="feature-card" style="border-left: 6px solid #ec4899;">
                     <h3><i class="ph-duotone ph-sparkle"></i> Inference Example</h3>
                     <p style="font-size:0.95rem; color:#64748b; margin-bottom:12px;"><strong>Q:</strong> Who has scored the most hat-tricks in the Premier League?</p>
+                    <div style="background:#fce7f3; padding:14px; border-radius:10px; margin-bottom:12px; font-size:0.88rem; line-height:1.6;">
+                        <p style="font-weight:700; color:#be185d; margin-bottom:6px;">Source Documents:</p>
+                        <p><strong>Doc[0]:</strong> [0] List of Premier League hat-tricks Since the inception of… [1] The first player to achieve the feat was Frenchman Eric…</p>
+                        <p><strong>Doc[1]:</strong> [0] List of England national football team hat-tricks Since… [1] The first players to score a hat-trick for England were…</p>
+                        <p><strong>Doc[2]:</strong> [0] Shearer and Sergio Agüero have scored three or more goals eleven times in the… [1] Robbie Fowler has scored nine; Thierry Henry and Michael Owen have scored eight hat-tricks each…</p>
+                    </div>
                     <div style="background:#fdf2f8; padding:16px; border-radius:12px; font-size:0.92rem; line-height:1.6;">
-                        <p><strong>A:</strong> Five players have scored the most hat-tricks in the Premier League, with each player scoring eleven hat-tricks: Alan Shearer, Sergio Agüero, Robbie Fowler, Thierry Henry, and Michael Owen. <code style="background:#ec4899; color:#fff; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[2], Sen[0], Inference), (Doc[2], Sen[1], Inference)</code></p>
+                        <p><strong>A:</strong> According to the document, five players have scored the most hat-tricks in the Premier League, with each player scoring eleven hat-tricks: Alan Shearer, Sergio Agüero, Robbie Fowler, Thierry Henry, and Michael Owen. <code style="background:#ec4899; color:#fff; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[2], Sen[0], Inference), (Doc[2], Sen[1], Inference)</code></p>
                     </div>
                 </div>
             </div>
@@ -846,137 +931,82 @@
                     <thead>
                         <tr>
                             <th style="text-align:left;">Model</th>
-                            <th>ROUGE-L</th>
-                            <th>BLEU</th>
-                            <th>Provenance F1</th>
-                            <th>Format (%)</th>
-                            <th>LLM-as-judge (1-5)</th>
+                            <th>ROUGE-L↑</th>
+                            <th>BLEU↑</th>
+                            <th>METEOR↑</th>
+                            <th>MoverScore↑</th>
+                            <th>Prec.↑</th>
+                            <th>Rec.↑</th>
+                            <th>F1↑</th>
+                            <th>Format (%)↑</th>
+                            <th>Judge (1–5)↑</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td style="text-align:left;">Baichuan2-7B</td>
-                            <td>34.68</td>
-                            <td>19.41</td>
-                            <td>3.04</td>
-                            <td>26.60</td>
-                            <td>0.78</td>
+                            <td>34.68</td><td>19.41</td><td>48.08</td><td>32.03</td><td>3.22</td><td>3.41</td><td>3.04</td><td>26.60</td><td>0.78</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Vicuna-7b-v1.5</td>
-                            <td>38.83</td>
-                            <td>24.37</td>
-                            <td>6.70</td>
-                            <td>92.40</td>
-                            <td>1.10</td>
+                            <td>38.83</td><td>24.37</td><td>50.08</td><td>34.73</td><td>9.01</td><td>5.85</td><td>6.70</td><td>92.40</td><td>1.10</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">InternLM2.5-7B</td>
-                            <td>47.79</td>
-                            <td>30.60</td>
-                            <td>11.94</td>
-                            <td>80.24</td>
-                            <td>1.67</td>
+                            <td>47.79</td><td>30.60</td><td>53.47</td><td>43.60</td><td>12.64</td><td>13.35</td><td>11.94</td><td>80.24</td><td>1.67</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Hunyuan-7B</td>
-                            <td>39.91</td>
-                            <td>24.70</td>
-                            <td>21.43</td>
-                            <td>90.88</td>
-                            <td>1.72</td>
+                            <td>39.91</td><td>24.70</td><td>43.74</td><td>32.99</td><td>22.78</td><td>22.86</td><td>21.43</td><td>90.88</td><td>1.72</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Yi-1.5-9B</td>
-                            <td>48.26</td>
-                            <td>30.11</td>
-                            <td>20.11</td>
-                            <td>96.81</td>
-                            <td>1.80</td>
+                            <td>48.26</td><td>30.11</td><td>47.77</td><td>43.35</td><td>20.71</td><td>22.91</td><td>20.11</td><td>96.81</td><td>1.80</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Llama-3.1-8B</td>
-                            <td>47.71</td>
-                            <td>26.36</td>
-                            <td>20.05</td>
-                            <td>99.85</td>
-                            <td>2.00</td>
+                            <td>47.71</td><td>26.36</td><td>42.04</td><td>41.14</td><td>21.78</td><td>20.30</td><td>20.05</td><td>99.85</td><td>2.00</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">GLM-4-9B</td>
-                            <td>50.33</td>
-                            <td>32.62</td>
-                            <td>32.79</td>
-                            <td>100.0</td>
-                            <td>2.16</td>
+                            <td>50.33</td><td>32.62</td><td>50.00</td><td>44.93</td><td>34.57</td><td>34.12</td><td>32.79</td><td>100.0</td><td>2.16</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Qwen3-8B</td>
-                            <td>51.80</td>
-                            <td>35.56</td>
-                            <td>32.53</td>
-                            <td>100.0</td>
-                            <td>2.25</td>
+                            <td>51.80</td><td>35.56</td><td>55.38</td><td>45.90</td><td>37.78</td><td>30.56</td><td>32.53</td><td>100.0</td><td>2.25</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Gemma-3-12B</td>
-                            <td>48.97</td>
-                            <td>32.13</td>
-                            <td>34.03</td>
-                            <td>100.0</td>
-                            <td>2.47</td>
+                            <td>48.97</td><td>32.13</td><td>50.80</td><td>43.79</td><td>41.06</td><td>31.11</td><td>34.03</td><td>100.0</td><td>2.47</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Qwen3-14B</td>
-                            <td>52.85</td>
-                            <td>35.70</td>
-                            <td>41.16</td>
-                            <td>99.70</td>
-                            <td>2.59</td>
+                            <td>52.85</td><td>35.70</td><td>55.34</td><td>47.06</td><td>45.80</td><td>40.33</td><td>41.16</td><td>99.70</td><td>2.59</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">GLM-4.5-355B</td>
-                            <td>49.81</td>
-                            <td>35.05</td>
-                            <td>44.55</td>
-                            <td>98.63</td>
-                            <td>2.63</td>
+                            <td>49.81</td><td>35.05</td><td>57.69</td><td>44.92</td><td>48.84</td><td>44.03</td><td>44.55</td><td>98.63</td><td>2.63</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Kimi</td>
-                            <td>49.33</td>
-                            <td>31.24</td>
-                            <td>29.70</td>
-                            <td>99.09</td>
-                            <td>2.20</td>
+                            <td>49.33</td><td>31.24</td><td>51.56</td><td>43.84</td><td>31.55</td><td>32.09</td><td>29.70</td><td>99.09</td><td>2.20</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">GPT-5</td>
-                            <td>41.79</td>
-                            <td>20.01</td>
-                            <td>17.88</td>
-                            <td>99.85</td>
-                            <td>2.23</td>
+                            <td>41.79</td><td>20.01</td><td>38.83</td><td>36.38</td><td>21.37</td><td>16.73</td><td>17.88</td><td>99.85</td><td>2.23</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Gemini 2.5 Pro</td>
-                            <td>48.75</td>
-                            <td>31.77</td>
-                            <td>42.92</td>
-                            <td>100.0</td>
-                            <td>2.57</td>
+                            <td>48.75</td><td>31.77</td><td>53.09</td><td>44.79</td><td>46.68</td><td>42.86</td><td>42.92</td><td>100.0</td><td>2.57</td>
                         </tr>
                         <tr class="highlight-row">
                             <td style="text-align:left;">GenProve (Ours)</td>
-                            <td>57.25</td>
-                            <td>42.22</td>
-                            <td>51.21</td>
-                            <td>99.85</td>
-                            <td>3.14</td>
+                            <td><strong>57.25</strong></td><td><strong>42.22</strong></td><td><strong>59.39</strong></td><td><strong>51.04</strong></td><td><strong>54.96</strong></td><td><strong>51.26</strong></td><td><strong>51.21</strong></td><td><strong>99.85</strong></td><td><strong>3.14</strong></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <p style="font-size:0.9rem; color:#64748b; margin-top:8px;">Table 1: Main results on ReFInE. GenProve consistently outperforms strong open-source and closed-source LLMs across answer quality (ROUGE-L, BLEU, METEOR, MoverScore), provenance accuracy (Precision, Recall, F1), format validity, and LLM-as-judge evaluation. Provenance F1 shows the largest margin over the strongest baseline, indicating substantially more accurate sentence-level evidence localization and relation typing.</p>
             
             <div class="results-viz">
                 <div class="viz-card">
@@ -1185,37 +1215,42 @@
             <div class="feature-cards">
                 <div class="feature-card" style="border-left: 6px solid #f59e0b;">
                     <h3><i class="ph-duotone ph-link-break"></i> Unsynchronized Provenance</h3>
-                    <p>The model produces answer content and provenance tags in an unsynchronized manner — provenance annotations are delayed or structurally detached from the sentences they support.</p>
-                    <div style="background:#fef3c7; padding:14px; border-radius:10px; margin-top:12px; font-size:0.9rem;">
-                        <p><strong>Q:</strong> What is the name of the roller coaster built by Giovanola at Six Flags Over Texas?</p>
-                        <p style="color:#92400e;"><strong>Model:</strong> The name of the roller coaster is Titan. <span style="color:#dc2626; font-weight:600;">[Missing provenance tag]</span></p>
-                        <p style="color:#059669; margin-top:8px;"><strong>Ground Truth:</strong> Titan. <code style="background:#f59e0b; color:#0f172a; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","0","Compression"), ("0","1","Compression")</code></p>
+                    <p>The model produces answer content and provenance tags in an unsynchronized manner — provenance annotations are delayed or structurally detached from the sentences they support, resulting in outputs that are only partially traceable.</p>
+                    <div style="background:#fef3c7; padding:14px; border-radius:10px; margin-top:12px; font-size:0.88rem; line-height:1.6;">
+                        <p><strong>Q:</strong> What is the name of the roller coaster built by Giovanola of Switzerland at Six Flags Over Texas?</p>
+                        <p style="font-weight:700; color:#92400e; margin-top:8px;">Source Documents:</p>
+                        <p style="color:#92400e;">Doc[2]: [0] Six Flags Over Texas had plans to add a… [1] An early proposal from Arrow Dynamics showed…</p>
+                        <p style="color:#dc2626; margin-top:8px;"><strong>Model:</strong> The name of the roller coaster built by Giovanola of Switzerland at Six Flags Over Texas is Titan. <span style="font-weight:600;">[Missing provenance tag]</span></p>
+                        <p style="color:#059669; margin-top:8px;"><strong>Ground Truth:</strong> The name of the roller coaster built by Giovanola of Switzerland at Six Flags Over Texas is Titan. <code style="background:#f59e0b; color:#0f172a; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","0","Compression"), ("0","1","Compression")</code></p>
                     </div>
                 </div>
 
                 <div class="feature-card" style="border-left: 6px solid #ec4899;">
                     <h3><i class="ph-duotone ph-cubes"></i> Incomplete Coverage</h3>
-                    <p>The model produces factually plausible answers but omits provenance tags for some sentences, breaking sentence-level verifiability even when content is supported.</p>
-                    <div style="background:#fdf2f8; padding:14px; border-radius:10px; margin-top:12px; font-size:0.9rem;">
+                    <p>The model produces factually plausible answer sentences but omits provenance tags for some of them. This breaks sentence-level verifiability even when the content is supported by the source documents.</p>
+                    <div style="background:#fdf2f8; padding:14px; border-radius:10px; margin-top:12px; font-size:0.88rem; line-height:1.6;">
                         <p><strong>Q:</strong> Who was the first non-European to win the Ballon d'Or?</p>
-                        <p style="color:#9d174d;"><strong>Model:</strong> George Weah of AC Milan. <code style="background:#ec4899; color:#fff; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","2","Quotation")</code> <span style="color:#dc2626; font-weight:600;">[Second sentence missing tag]</span></p>
+                        <p style="font-weight:700; color:#9d174d; margin-top:8px;">Source Documents:</p>
+                        <p style="color:#9d174d;">Doc[0]: [0] Section: History. [1] Stanley Matthews of Blackpool was the inaugural winner of the Ballon d'Or.</p>
+                        <p style="color:#9d174d;">Doc[1]: [0] Stanley Matthews of Blackpool was the inaugural winner of the Ballon d'Or. Prior to 1995… [1] Milan's George Weah, the only African recipient…</p>
+                        <p style="color:#9d174d;">Doc[2]: [0] "The six editions of the FIFA Ballon d'Or... [1] Barcelona's Messi won the inaugural Ballon d'Or…</p>
+                        <p style="color:#dc2626; margin-top:8px;"><strong>Model:</strong> The first non-European player to win the Ballon d'Or was George Weah of AC Milan. <code style="background:#ec4899; color:#fff; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","2","Quotation")</code> <span style="font-weight:600;">[Missing: second sentence &amp; provenance tag]</span></p>
+                        <p style="color:#059669; margin-top:8px;"><strong>Ground Truth:</strong> The first non-European to win the Ballon d'Or was George Weah of Milan. He won the award in the year that the rules of eligibility were changed, making it possible for non-European players to be considered for the award. <code style="background:#ec4899; color:#fff; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","2","Quotation"), ("1","1","Quotation")</code></p>
                     </div>
                 </div>
 
                 <div class="feature-card" style="border-left: 6px solid #a78bfa;">
                     <h3><i class="ph-duotone ph-map-pin"></i> Incorrect Localization</h3>
-                    <p>The model emits well-formed provenance tags, but the referenced indices don't actually contain the supporting evidence — the cited source is topically related but imprecise.</p>
-                    <div style="background:#f5f3ff; padding:14px; border-radius:10px; margin-top:12px; font-size:0.9rem;">
+                    <p>The model emits well-formed provenance tags, but the referenced document or sentence indices do not actually contain the supporting evidence. The cited source is often topically related but imprecise at the sentence level.</p>
+                    <div style="background:#f5f3ff; padding:14px; border-radius:10px; margin-top:12px; font-size:0.88rem; line-height:1.6;">
                         <p><strong>Q:</strong> What is the main food of a koala?</p>
-                        <p style="color:#5b21b6;"><strong>Model:</strong> Eucalyptus leaves. <code style="background:#a78bfa; color:#fff; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","1","Compression")</code> <span style="color:#dc2626; font-weight:600;">[Wrong — evidence is in Doc[1], Sen[1]]</span></p>
+                        <p style="font-weight:700; color:#5b21b6; margin-top:8px;">Source Documents:</p>
+                        <p style="color:#5b21b6;">Doc[0]: [0] Koalas are mainly distributed in the eastern coastal areas of Australia. [1] They typically inhabit open eucalyptus forests.</p>
+                        <p style="color:#5b21b6;">Doc[1]: [0] Koalas spend most of their time sleeping. [1] Koalas feed almost entirely on eucalyptus leaves. [2] Because eucalyptus leaves are low in nutrients, they need to conserve energy.</p>
+                        <p style="color:#5b21b6;">Doc[2]: [0] Eucalyptus trees dominate many Australian forest ecosystems. [1] These forests provide both shelter and food for several native species.</p>
+                        <p style="color:#dc2626; margin-top:8px;"><strong>Model:</strong> Koalas primarily feed on eucalyptus leaves. <code style="background:#a78bfa; color:#fff; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","1","Compression")</code> <span style="font-weight:600;">[Wrong — Doc[0], Sen[1] discusses habitat, not diet]</span></p>
+                        <p style="color:#059669; margin-top:8px;"><strong>Ground Truth:</strong> The main food source of koalas is eucalyptus leaves. <code style="background:#a78bfa; color:#fff; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("1","1","Compression")</code></p>
                     </div>
-                </div>
-            </div>
-
-            <div class="figure figure-sm" style=" box-shadow:0 15px 35px -10px rgba(167,139,250,0.25);">
-                <img src="./Figure%207-A%20representative%20relation-type%20error.jpg" alt="Representative Relation-Type Error">
-                <div class="figure-caption">
-                    Figure 7: A representative relation-type error. The cited evidence is relevant, but the predicted provenance type does not match how the answer sentence is actually supported by the source — confusing Quotation with Compression.
                 </div>
             </div>
 
