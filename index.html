@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GenProve: Learning to Generate Text with Fine-Grained Provenance</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
     <style>
         :root {
             --primary-color: #0f172a;
@@ -37,6 +37,14 @@
             overflow-x: hidden;
         }
 
+        p {
+            text-indent: 2em;
+        }
+
+        .authors, .affiliations, .links p, .figure-caption, footer p, .btn, nav a, .bibtex, h1, h2, h3 {
+            text-indent: 0;
+        }
+
         /* Animated subtle background pattern */
         body::before {
             content: '';
@@ -61,14 +69,14 @@
         .container {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 24px 20px;
         }
 
         /* Enhanced Header - Hero with depth */
         header {
             text-align: center;
-            margin-bottom: 60px;
-            padding: 60px 40px;
+            margin-bottom: 40px;
+            padding: 44px 36px;
             border-radius: 24px;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -167,13 +175,15 @@
             color: white;
             text-decoration: none;
             font-weight: 600;
-            padding: 10px 24px;
+            padding: 8px 16px;
             border-radius: 9999px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             position: relative;
             overflow: hidden;
+            font-size: 0.92rem;
+            white-space: nowrap;
         }
 
         nav a::before {
@@ -203,8 +213,8 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 18px;
-            margin-top: 32px;
+            gap: 16px;
+            margin-top: 24px;
         }
 
         .btn {
@@ -236,11 +246,11 @@
 
         /* Section styling with depth */
         section {
-            margin-bottom: 80px;
+            margin-bottom: 48px;
             scroll-margin-top: 100px;
             background: var(--glass-bg);
             border-radius: 24px;
-            padding: 48px;
+            padding: 36px;
             box-shadow: var(--card-shadow);
             position: relative;
             border: 1px solid rgba(34, 211, 238, 0.15);
@@ -259,12 +269,12 @@
         }
 
         h2 {
-            font-size: 2.4rem;
+            font-size: 2.2rem;
             color: var(--primary-color);
-            margin-bottom: 28px;
+            margin: 0 0 20px 0;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         h2 .header-icon {
@@ -274,27 +284,27 @@
         }
 
         h3 {
-            font-size: 1.65rem;
+            font-size: 1.5rem;
             color: var(--secondary-color);
-            margin: 40px 0 18px;
+            margin: 28px 0 14px;
         }
 
         /* Abstract with special framing */
         .abstract-box {
             background: white;
-            padding: 48px;
+            padding: 36px;
             border-radius: 20px;
             box-shadow: 0 20px 40px -15px rgba(34, 211, 238, 0.2);
-            border-left: 8px solid var(--accent-color);
+            border-left: 6px solid var(--accent-color);
             position: relative;
         }
 
         /* Feature cards with 3D hover */
         .feature-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 28px;
-            margin: 48px 0;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
         }
 
         .feature-card {
@@ -375,9 +385,9 @@
         /* Results visualization grid */
         .results-viz {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
-            gap: 32px;
-            margin: 48px 0;
+            grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
         }
 
         .viz-card {
@@ -391,15 +401,57 @@
         /* Footer */
         footer {
             text-align: center;
-            margin-top: 100px;
-            padding: 40px;
+            margin-top: 56px;
+            padding: 36px;
             background: linear-gradient(90deg, var(--primary-color), #1e2937);
             color: white;
             border-radius: 24px;
-            font-size: 1.05rem;
+            font-size: 1rem;
         }
 
-        /* Responsive */
+        /* Image styling */
+        .figure img {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .viz-card img {
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .figure {
+            margin: 32px 0;
+            padding: 24px;
+            background: #fff;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .figure-caption {
+            margin-top: 16px;
+            font-style: italic;
+            color: #64748b;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .figure-sm img {
+            max-width: 380px;
+        }
+
+        .figure-md img {
+            max-width: 520px;
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             section { padding: 32px 20px; }
@@ -418,17 +470,19 @@
         <nav>
             <!-- Logo -->
             <a href="#" class="nav-logo">
-                <i class="fas fa-brain"></i>
+                <i class="ph-duotone ph-sparkle"></i>
                 GenProve
             </a>
             
             <div class="links">
-                <a href="#abstract"><i class="fas fa-book-open"></i> Abstract</a>
-                <a href="#contributions"><i class="fas fa-gem"></i> Contributions</a>
-                <a href="#refine"><i class="fas fa-database"></i> ReFInE Dataset</a>
-                <a href="#genprove"><i class="fas fa-cogs"></i> GenProve Framework</a>
-                <a href="#results"><i class="fas fa-chart-bar"></i> Results</a>
-                <a href="#citation"><i class="fas fa-quote-right"></i> Citation</a>
+                <a href="#abstract"><i class="ph-duotone ph-book-open-text"></i> Abstract</a>
+                <a href="#contributions"><i class="ph-duotone ph-diamond"></i> Contributions</a>
+                <a href="#refine"><i class="ph-duotone ph-database"></i> ReFInE Dataset</a>
+                <a href="#method"><i class="ph-duotone ph-sliders"></i> Method</a>
+                <a href="#results"><i class="ph-duotone ph-chart-bar"></i> Results</a>
+                <a href="#error-analysis"><i class="ph-duotone ph-magnifying-glass"></i> Error Analysis</a>
+                <a href="#limitations"><i class="ph-duotone ph-warning-octagon"></i> Limitations</a>
+                <a href="#citation"><i class="ph-duotone ph-chats"></i> Citation</a>
             </div>
         </nav>
     </div>
@@ -442,6 +496,7 @@
                 Jingxuan Wei, Xingyue Wang, Yanghaoyu Liao, Jie Dong, Yuchen Liu, Caijun Jia, Bihui Yu, Junnan Zhu
             </div>
             <div class="affiliations">
+                Key Laboratory of Computing Power Network and Information Security, Ministry of Education, Shandong Computer Science Center (National Supercomputer Center in Jinan), Qilu University of Technology (Shandong Academy of Sciences)<br>
                 Shenyang Institute of Computing Technology, Chinese Academy of Sciences<br>
                 MAIS, Institute of Automation, Chinese Academy of Sciences<br>
                 University of Chinese Academy of Sciences
@@ -449,90 +504,83 @@
 
             <div class="links">
                 <a href="https://arxiv.org/abs/2601.04932" class="btn" target="_blank">
-                    <i class="fas fa-file-pdf"></i> Paper (arXiv)
+                    <i class="ph-duotone ph-file-text"></i> Paper (arXiv)
                 </a>
                 <a href="https://github.com/yanghaoyuliao/GenProve" class="btn" target="_blank">
-                    <i class="fab fa-github"></i> Code
+                    <i class="ph-duotone ph-code"></i> Code
                 </a>
                 <a href="https://huggingface.co/liaao/Qwen3-8B_SFT_100_Steps" class="btn" target="_blank">
-                    <i class="fas fa-robot"></i> Model (HuggingFace)
+                    <i class="ph-duotone ph-robot"></i> Model (HuggingFace)
                 </a>
             </div>
         </header>
 
         <section id="abstract">
             <div class="abstract-box">
-                <h2><span class="header-icon"><i class="fas fa-quote-left"></i></span> Abstract</h2>
+                <h2><span class="header-icon"><i class="ph-duotone ph-chats"></i></span> Abstract</h2>
                 <p>Large language models (LLM) often hallucinate, and while adding citations is a common solution, it is frequently insufficient for accountability as users struggle to verify how a cited source supports a generated claim. Existing methods are typically coarse-grained and fail to distinguish between direct quotes and complex reasoning.</p>
                 
-                <div class="figure" style="margin:40px 0; padding:20px; background:#fff; border-radius:16px; box-shadow:0 15px 35px -10px rgba(34,211,238,0.25);">
-                    <img src="./intro.jpg" alt="Concept Comparison: Coarse vs. Fine-Grained Provenance" style="max-width:100%; border-radius:12px;">
-                    <div class="figure-caption" style="margin-top:18px; font-style:italic; color:#64748b;">
-                        Figure 1: Illustration of the concept gap. Left: Standard retrieval-augmented models with coarse, document-level citation. Right: GenProve with generation-time, sentence-level, and typed provenance (Quotation, Compression, Inference).
+                <div class="figure figure-sm" style=" box-shadow:0 15px 35px -10px rgba(34,211,238,0.25);">
+                    <img src="./intro.jpg" alt="Concept Comparison: Coarse vs. Fine-Grained Provenance">
+                    <div class="figure-caption">
+                        Figure 1: Overview of Generation-time Fine-grained Provenance. Given a query and source documents, the model simultaneously produces the answer and structured triples (DocID, SentID, Relation) to explain how the evidence supports each generated sentence.
                     </div>
                 </div>
 
                 <p>In this paper, we introduce <strong>Generation-time Fine-grained Provenance</strong>, a task where models must generate fluent answers while simultaneously producing structured, sentence-level provenance triples.</p>
                 
                 <p>To enable this, we present <strong>ReFInE</strong> (Relation-aware Fine-grained Interpretability &amp; Evidence), a dataset featuring expert-verified annotations that distinguish between Quotation, Compression, and Inference. Building on ReFInE, we propose <strong>GenProve</strong>, a framework that combines Supervised Fine-Tuning (SFT) with Group Relative Policy Optimization (GRPO). By optimizing a composite reward for answer fidelity and provenance correctness, GenProve significantly outperforms 14 strong LLMs in joint evaluation.</p>
-                
-                <div class="figure" style="margin:40px 0; padding:20px; background:#fff; border-radius:16px; box-shadow:0 15px 35px -10px rgba(167,139,250,0.25);">
-                    <img src="https://via.placeholder.com/900x420/a78bfa/0f172a?text=GenProve+Performance+Gains" alt="GenProve Performance Improvement" style="max-width:100%; border-radius:12px;">
-                    <div class="figure-caption" style="margin-top:18px; font-style:italic; color:#64748b;">
-                        Figure 2: GenProve achieves state-of-the-art performance across multiple metrics, with particularly strong gains in provenance accuracy.
-                    </div>
-                </div>
-                
+
                 <p>Crucially, our analysis uncovers a reasoning gap where models excel at surface-level quotation but struggle significantly with inference-based provenance, suggesting that verifiable reasoning remains a frontier challenge distinct from surface-level citation.</p>
             </div>
         </section>
 
         <section id="contributions">
-            <h2><span class="header-icon"><i class="fas fa-gem"></i></span> Key Contributions</h2>
+            <h2><span class="header-icon"><i class="ph-duotone ph-diamond"></i></span> Key Contributions</h2>
             
             <div class="feature-cards">
                 <div class="feature-card">
-                    <h3><i class="fas fa-bullseye"></i> Novel Task Formulation</h3>
+                    <h3><i class="ph-duotone ph-crosshair"></i> Novel Task Formulation</h3>
                     <p>We define <strong>Generation-time Fine-grained Provenance</strong>, shifting from coarse document-level citations to sentence-level attribution with explicit relation typing.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <h3><i class="fas fa-database"></i> ReFInE Dataset</h3>
+                    <h3><i class="ph-duotone ph-database"></i> ReFInE Dataset</h3>
                     <p>We release the first expert-annotated QA dataset that provides dense, typed provenance supervision for multi-document generation.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <h3><i class="fas fa-cogs"></i> GenProve Framework</h3>
+                    <h3><i class="ph-duotone ph-sliders"></i> GenProve Framework</h3>
                     <p>We propose an integrated SFT with GRPO alignment approach to master structured provenance generation.</p>
                 </div>
             </div>
         </section>
 
         <section id="refine">
-            <h2><span class="header-icon"><i class="fas fa-table"></i></span> The ReFInE Dataset</h2>
+            <h2><span class="header-icon"><i class="ph-duotone ph-table"></i></span> The ReFInE Dataset</h2>
             <p>Most existing benchmarks are designed for analysis after generation or lack structured supervision on evidence types. To bridge this gap, we construct ReFInE (Relation-aware Fine-grained Interpretability &amp; Evidence). Built via a rigorous human-in-the-loop pipeline, the dataset features three distinct provenance relations:</p>
             
             <div class="feature-cards">
                 <div class="feature-card">
-                    <h3><i class="fas fa-quote-right"></i> Quotation</h3>
+                    <h3><i class="ph-duotone ph-chats"></i> Quotation</h3>
                     <p>The answer sentence partially or fully copies the wording of the source sentence.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <h3><i class="fas fa-compress-arrows-alt"></i> Compression</h3>
+                    <h3><i class="ph-duotone ph-arrows-in"></i> Compression</h3>
                     <p>The answer sentence summarizes or paraphrases information distributed across source sentences.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <h3><i class="fas fa-brain"></i> Inference</h3>
+                    <h3><i class="ph-duotone ph-sparkle"></i> Inference</h3>
                     <p>The answer sentence states a conclusion logically supported by source sentences.</p>
                 </div>
             </div>
             
-            <div class="figure" style="margin:40px 0; padding:20px; background:#fff; border-radius:16px; box-shadow:0 15px 35px -10px rgba(34,211,238,0.25);">
-                <img src="https://via.placeholder.com/900x420/0f172a/white?text=ReFInE+Dataset+Construction+Pipeline" alt="ReFInE Dataset Construction" style="max-width:100%; border-radius:12px;">
-                <div class="figure-caption" style="margin-top:18px; font-style:italic; color:#64748b;">
-                    Figure 3: The three-stage construction pipeline of ReFInE ensures high-quality provenance supervision through preprocessing, LLM-assisted annotation, and expert validation.
+            <div class="figure" style=" box-shadow:0 15px 35px -10px rgba(34,211,238,0.25);">
+                <img src="./Figure%202-The%20construction%20pipeline%20of%20ReFInE.jpg" alt="ReFInE Dataset Construction">
+                <div class="figure-caption">
+                    Figure 2: The three-stage construction pipeline of ReFInE: (1) raw data preprocessing with sentence-level splitting, (2) GPT-4o-based provenance annotation with human filtering, and (3) reconstruction with rigorous expert validation to verify evidence sufficiency and relation correctness.
                 </div>
             </div>
             
@@ -543,67 +591,187 @@
                         <tr>
                             <th>Split</th>
                             <th>Instances</th>
+                            <th>% of Total</th>
                             <th>Avg. Provenance Tags</th>
-                            <th>Avg. Triples per Tag</th>
+                            <th>Quotation</th>
+                            <th>Compression</th>
+                            <th>Inference</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>SFT</td>
                             <td>12,540</td>
+                            <td>55.4%</td>
                             <td>3.96</td>
-                            <td>1.98</td>
+                            <td>63%</td>
+                            <td>14%</td>
+                            <td>23%</td>
                         </tr>
                         <tr>
                             <td>GRPO</td>
                             <td>5,256</td>
+                            <td>23.22%</td>
                             <td>4.12</td>
-                            <td>2.05</td>
+                            <td>54%</td>
+                            <td>13%</td>
+                            <td>33%</td>
                         </tr>
                         <tr>
                             <td>EVAL</td>
                             <td>4,838</td>
+                            <td>21.38%</td>
                             <td>3.87</td>
-                            <td>1.92</td>
+                            <td>52%</td>
+                            <td>22%</td>
+                            <td>26%</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <p style="font-size:0.9rem; color:#64748b; margin-top:8px;">Quotation dominates across all splits. GRPO allocates a larger share to Inference and Compression than EVAL, making it more suitable for optimizing reasoning and abstraction under sentence-level evidence constraints. On average, each answer contains 3.96 provenance tags, with each tag aggregating 1.98 provenance triples.</p>
+
+            <div class="figure figure-sm" style=" box-shadow:0 15px 35px -10px rgba(167,139,250,0.25);">
+                <img src="./Figure%203-Relation-type%20distribution%20in%20ReFInE.jpg" alt="Relation-type Distribution in ReFInE">
+                <div class="figure-caption">
+                    Figure 3: Relation-type distribution in ReFInE. Quotation dominates across all splits, while GRPO allocates a larger share to Inference and Compression, making it more suitable for optimizing reasoning and abstraction.
+                </div>
+            </div>
+
+            <h3>Comparison with Existing Benchmarks</h3>
+            <p>ReFInE distinguishes itself from prior benchmarks by enforcing generation-time, sentence-level provenance with explicit relation typing and structured tags.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Benchmark</th>
+                            <th>Year</th>
+                            <th>#Rel</th>
+                            <th>Avg. Citations</th>
+                            <th>Sent.-level</th>
+                            <th>Generative</th>
+                            <th>Typed Relations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">ASQA</td>
+                            <td>2023</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td>✗</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">SCiFi</td>
+                            <td>2024</td>
+                            <td>1</td>
+                            <td>1.86</td>
+                            <td>✗</td>
+                            <td>✓</td>
+                            <td>✗</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">FRONT</td>
+                            <td>2024</td>
+                            <td>1</td>
+                            <td>4.40</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td>✗</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">TROVE</td>
+                            <td>2025</td>
+                            <td>4</td>
+                            <td>1.97</td>
+                            <td>✓</td>
+                            <td>✗</td>
+                            <td>✓</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td style="text-align:left;"><strong>ReFInE (Ours)</strong></td>
+                            <td>—</td>
+                            <td>3</td>
+                            <td>7.64</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Example Instances</h3>
+            <p>Each ReFInE instance pairs a user question with multiple source documents and a reference answer, where every sentence carries a provenance annotation linking it to source sentences.</p>
+
+            <div class="feature-cards">
+                <div class="feature-card" style="border-left: 6px solid #22d3ee;">
+                    <h3><i class="ph-duotone ph-chats"></i> Quotation Example</h3>
+                    <p style="font-size:0.95rem; color:#64748b; margin-bottom:12px;"><strong>Q:</strong> When was the Xbox One released?</p>
+                    <div style="background:#f0fdfa; padding:16px; border-radius:12px; font-size:0.92rem; line-height:1.6;">
+                        <p><strong>A:</strong> The Xbox One was released on November 22, 2013, in North America, Europe, and Australia. <code style="background:#22d3ee; color:#0f172a; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[0], Sen[0], Quotation)</code></p>
+                        <p>It was later released in 26 other markets in 2014. <code style="background:#22d3ee; color:#0f172a; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[0], Sen[0], Quotation)</code></p>
+                    </div>
+                </div>
+
+                <div class="feature-card" style="border-left: 6px solid #a78bfa;">
+                    <h3><i class="ph-duotone ph-arrows-in"></i> Compression Example</h3>
+                    <p style="font-size:0.95rem; color:#64748b; margin-bottom:12px;"><strong>Q:</strong> Who hosted the Late Late Show after Tom Snyder?</p>
+                    <div style="background:#f5f3ff; padding:16px; border-radius:12px; font-size:0.92rem; line-height:1.6;">
+                        <p><strong>A:</strong> After Tom Snyder stepped down, The Late Late Show experienced several hosting transitions, with Craig Kilborn and later Craig Ferguson successively taking over, before eventually settling on James Corden. <code style="background:#a78bfa; color:#fff; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[0], Sen[1], Compression), (Doc[0], Sen[2], Compression)</code></p>
+                    </div>
+                </div>
+
+                <div class="feature-card" style="border-left: 6px solid #ec4899;">
+                    <h3><i class="ph-duotone ph-sparkle"></i> Inference Example</h3>
+                    <p style="font-size:0.95rem; color:#64748b; margin-bottom:12px;"><strong>Q:</strong> Who has scored the most hat-tricks in the Premier League?</p>
+                    <div style="background:#fdf2f8; padding:16px; border-radius:12px; font-size:0.92rem; line-height:1.6;">
+                        <p><strong>A:</strong> Five players have scored the most hat-tricks in the Premier League, with each player scoring eleven hat-tricks: Alan Shearer, Sergio Agüero, Robbie Fowler, Thierry Henry, and Michael Owen. <code style="background:#ec4899; color:#fff; padding:2px 8px; border-radius:6px; font-size:0.85rem;">(Doc[2], Sen[0], Inference), (Doc[2], Sen[1], Inference)</code></p>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section id="genprove">
-            <h2><span class="header-icon"><i class="fas fa-project-diagram"></i></span> The GenProve Framework</h2>
-            <p>We develop GenProve, a two-step training framework that enables a model to generate answers with fine-grained provenance. It consists of:</p>
-            
-            <div class="feature-cards">
-                <div class="feature-card">
-                    <h3><i class="fas fa-graduation-cap"></i> Supervised Fine-Tuning (SFT)</h3>
-                    <p>Trains the base model to follow instructions and emit well-formed provenance annotations with fluent answers.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <h3><i class="fas fa-robot"></i> GRPO-based Reinforcement Learning</h3>
-                    <p>Optimizes a composite reward evaluating both content quality and provenance accuracy.</p>
+        <section id="method">
+            <h2><span class="header-icon"><i class="ph-duotone ph-tree-structure"></i></span> The GenProve Framework</h2>
+            <p>GenProve is a two-step training framework that enables a model to generate answers with fine-grained provenance. Given a question <em>Q</em> and a document collection <em>D</em>, the model produces an answer <em>A</em> where each sentence is accompanied by a set of provenance triples identifying supporting source sentences and their relation types.</p>
+
+            <div class="figure" style=" box-shadow:0 15px 35px -10px rgba(167,139,250,0.25);">
+                <img src="./Figure%204-The%20GenProve%20framework.jpg" alt="GenProve Training Framework">
+                <div class="figure-caption">
+                    Figure 4: Overview of the GenProve framework. The model first undergoes SFT for instruction following and format learning, then is aligned using GRPO with a composite reward mechanism that jointly optimizes answer fidelity (content similarity reward) and fine-grained provenance accuracy (F1 Reward).
                 </div>
             </div>
 
-            <div class="figure" style="margin:40px 0; padding:20px; background:#fff; border-radius:16px; box-shadow:0 15px 35px -10px rgba(167,139,250,0.25);">
-                <img src="https://via.placeholder.com/900x420/22d3ee/0f172a?text=GenProve+Framework+Overview" alt="GenProve Training Framework" style="max-width:100%; border-radius:12px;">
-                <div class="figure-caption" style="margin-top:18px; font-style:italic; color:#64748b;">
-                    Figure 4: Overview of the GenProve framework. The base LLM is first fine-tuned via SFT and then optimized using Group Relative Policy Optimization (GRPO) with a composite reward function.
+            <h3>Step 1: Supervised Fine-Tuning (SFT)</h3>
+            <p>SFT serves as a foundational warm-up stage primarily designed to enforce structure adherence and provide stable format grounding. It trains the base model to follow instructions and emit well-formed provenance annotations together with fluent answers, so that the subsequent RL stage can focus on reward-driven refinement rather than basic schema learning.</p>
+            <p>Starting from <strong>Qwen3-8B</strong>, we perform full-parameter optimization with AdamW (lr = 2×10<sup>-5</sup>), a maximum sequence length of 2048, and an effective batch size of 16.</p>
+
+            <h3>Step 2: GRPO-based Reinforcement Learning</h3>
+            <p>Reinforcement learning improves provenance accuracy and reduces unsupported statements by optimizing a composite reward. Starting from the SFT policy, we sample a group of candidate answers for each input and update the policy using <strong>Group Relative Policy Optimization (GRPO)</strong>, with temperature = 1, β = 0.02, and 4 iterations per update.</p>
+
+            <h3>Reward Design</h3>
+            <p>The composite reward combines two complementary components:</p>
+
+            <div class="feature-cards">
+                <div class="feature-card" style="border-left: 6px solid #22d3ee;">
+                    <h3><i class="ph-duotone ph-text-aa"></i> Reward A: Content Similarity</h3>
+                    <p>For each generated sentence, we find the best-matching reference sentence by cosine similarity between Sentence-Transformer embeddings. If similarity exceeds τ<sub>c</sub> = 0.45, we compute ROUGE-L between the matched pair. This reward encourages semantic alignment with the reference while preserving sentence-level structure.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 6px solid #a78bfa;">
+                    <h3><i class="ph-duotone ph-checks"></i> Reward B: Provenance F1</h3>
+                    <p>For each reference sentence, we retrieve the closest generated sentence by cosine similarity (threshold τ<sub>p</sub> = 0.50). We compare provenance sets and compute sentence-level precision, recall, and F1 over the triples (DocID, SentID, Relation). This reward encourages correct provenance triples and relation types.</p>
                 </div>
             </div>
-            
-            <h3>Reward Design</h3>
-            <p>The composite reward combines two components:</p>
-            <ul style="font-size:1.1rem; padding-left:30px;">
-                <li><strong>Content Similarity Reward</strong>: Encourages semantic alignment with reference answers</li>
-                <li><strong>Provenance F1 Reward</strong>: Encourages generating correct provenance triples and relation types</li>
-            </ul>
+
+            <p>The composite reward is: <strong>R = α · R<sub>sim</sub> + β · R<sub>prov</sub></strong>, balancing content fidelity and provenance correctness. This design penalizes common failure modes including incorrect relation typing and unsupported or out-of-document provenance.</p>
         </section>
 
         <section id="results">
-            <h2><span class="header-icon"><i class="fas fa-chart-line"></i></span> Experimental Results</h2>
+            <h2><span class="header-icon"><i class="ph-duotone ph-chart-line"></i></span> Experimental Results</h2>
             <p>We evaluate 14 LLMs, covering both open- and closed-source systems. Results show that GenProve establishes a new state-of-the-art, significantly outperforming competitors in both answer quality and provenance accuracy.</p>
             
             <div class="table-container">
@@ -746,14 +914,14 @@
             <div class="results-viz">
                 <div class="viz-card">
                     <h3>Performance by Relation Type</h3>
-                    <img src="https://via.placeholder.com/520x320/22d3ee/0f172a?text=Relation+Type+Performance+Heatmap" alt="Performance by Relation Type" style="max-width:100%; border-radius:12px;">
-                    <p style="margin-top:16px;">GenProve shows strongest performance across all three relations, with largest gains on Compression and Inference.</p>
+                    <img src="./Figure%205-Performance%20breakdown%20by%20relation%20type%20(F1%20score).jpg" alt="Performance by Relation Type">
+                    <p style="margin-top:16px;">GenProve achieves 65.31 Quotation F1, 25.82 Compression F1, and 29.36 Inference F1 — showing the largest gains on complex provenance tasks.</p>
                 </div>
-                
+
                 <div class="viz-card">
-                    <h3>Training Dynamics</h3>
-                    <img src="https://via.placeholder.com/520x320/a78bfa/0f172a?text=GRPO+Training+Progress" alt="GRPO Training Dynamics" style="max-width:100%; border-radius:12px;">
-                    <p style="margin-top:16px;">Both component rewards increase and stabilize during GRPO alignment, indicating coordinated optimization.</p>
+                    <h3>GRPO Training Dynamics</h3>
+                    <img src="./Figure%206-Learning%20dynamics%20during%20GRPO.jpg" alt="GRPO Training Dynamics">
+                    <p style="margin-top:16px;">Both content similarity and provenance F1 rewards increase and stabilize during GRPO alignment, indicating coordinated dual-objective optimization.</p>
                 </div>
             </div>
             
@@ -806,21 +974,235 @@
                     </tbody>
                 </table>
             </div>
+
+            <h3>Document-Level Citation Benchmark</h3>
+            <p>For direct comparison with prior document-level citation methods, we collapse sentence-level provenance to cited document sets. GenProve achieves the best performance across all metrics, reaching <strong>94.45 Doc-Precision</strong>, <strong>93.16 Doc-Recall</strong>, and <strong>92.43 Doc-F1</strong> — a gain of 11.33 Doc-F1 over the previous state of the art (GERE).</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Model</th>
+                            <th>Doc-Precision</th>
+                            <th>Doc-Recall</th>
+                            <th>Doc-F1</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">VANILLA</td>
+                            <td>72.50</td>
+                            <td>73.60</td>
+                            <td>73.05</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">SUMM</td>
+                            <td>68.90</td>
+                            <td>61.80</td>
+                            <td>65.16</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">SNIPPET</td>
+                            <td>65.30</td>
+                            <td>57.40</td>
+                            <td>61.10</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">APO</td>
+                            <td>69.60</td>
+                            <td>72.80</td>
+                            <td>71.20</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">VeriCite</td>
+                            <td>74.61</td>
+                            <td>81.13</td>
+                            <td>77.73</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">GERE</td>
+                            <td>84.43</td>
+                            <td>78.01</td>
+                            <td>81.10</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td style="text-align:left;"><strong>GenProve (Ours)</strong></td>
+                            <td><strong>94.45</strong></td>
+                            <td><strong>93.16</strong></td>
+                            <td><strong>92.43</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>LLM-as-a-Judge Breakdown</h3>
+            <p>We decouple evaluation into text generation quality and traceability quality using two specialized LLM judges, enabling finer-grained diagnosis of model errors.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Model</th>
+                            <th>Text Quality</th>
+                            <th>Prov. Quotation</th>
+                            <th>Prov. Compression</th>
+                            <th>Prov. Inference</th>
+                            <th>Avg</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">GLM-4.5-355B</td>
+                            <td>4.29</td>
+                            <td>4.13</td>
+                            <td>0.91</td>
+                            <td>0.79</td>
+                            <td>2.63</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Gemma-3-12B</td>
+                            <td>3.97</td>
+                            <td>4.03</td>
+                            <td>1.06</td>
+                            <td>0.42</td>
+                            <td>2.47</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Qwen3-14B</td>
+                            <td>4.10</td>
+                            <td>4.06</td>
+                            <td>1.56</td>
+                            <td>0.21</td>
+                            <td>2.59</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Gemini 2.5 Pro</td>
+                            <td>4.24</td>
+                            <td>4.33</td>
+                            <td>1.09</td>
+                            <td>0.19</td>
+                            <td>2.57</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">GPT-5</td>
+                            <td>4.14</td>
+                            <td>2.39</td>
+                            <td>1.97</td>
+                            <td>0.29</td>
+                            <td>2.23</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td style="text-align:left;"><strong>GenProve</strong></td>
+                            <td>3.98</td>
+                            <td><strong>4.43</strong></td>
+                            <td><strong>2.45</strong></td>
+                            <td><strong>1.40</strong></td>
+                            <td><strong>3.14</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="margin-top:16px; color:#64748b; font-style:italic;">GenProve shows particularly large gains in complex Compression and Inference relations, where most baselines struggle significantly.</p>
+
+            <div class="figure figure-md" style="box-shadow:0 15px 35px -10px rgba(34,211,238,0.25);">
+                <img src="./Figure%208-Correlation.jpg" alt="Correlation between LLM-as-a-Judge and Human Ratings">
+                <div class="figure-caption">
+                    Figure 8: Correlation between LLM-as-a-Judge scores and human ratings (Pearson r = 0.9395). The high correlation validates the automatic metric. GenProve occupies the top-right corner, demonstrating superior performance under both evaluations.
+                </div>
+            </div>
+        </section>
+
+        <section id="error-analysis">
+            <h2><span class="header-icon"><i class="ph-duotone ph-magnifying-glass"></i></span> Error Analysis</h2>
+            <p>Diagnostic analysis reveals a clear difficulty ordering across relation types and identifies three common error patterns in fine-grained provenance generation.</p>
+
+            <h3>Three Common Error Patterns</h3>
+            <div class="feature-cards">
+                <div class="feature-card" style="border-left: 6px solid #f59e0b;">
+                    <h3><i class="ph-duotone ph-link-break"></i> Unsynchronized Provenance</h3>
+                    <p>The model produces answer content and provenance tags in an unsynchronized manner — provenance annotations are delayed or structurally detached from the sentences they support.</p>
+                    <div style="background:#fef3c7; padding:14px; border-radius:10px; margin-top:12px; font-size:0.9rem;">
+                        <p><strong>Q:</strong> What is the name of the roller coaster built by Giovanola at Six Flags Over Texas?</p>
+                        <p style="color:#92400e;"><strong>Model:</strong> The name of the roller coaster is Titan. <span style="color:#dc2626; font-weight:600;">[Missing provenance tag]</span></p>
+                        <p style="color:#059669; margin-top:8px;"><strong>Ground Truth:</strong> Titan. <code style="background:#f59e0b; color:#0f172a; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","0","Compression"), ("0","1","Compression")</code></p>
+                    </div>
+                </div>
+
+                <div class="feature-card" style="border-left: 6px solid #ec4899;">
+                    <h3><i class="ph-duotone ph-cubes"></i> Incomplete Coverage</h3>
+                    <p>The model produces factually plausible answers but omits provenance tags for some sentences, breaking sentence-level verifiability even when content is supported.</p>
+                    <div style="background:#fdf2f8; padding:14px; border-radius:10px; margin-top:12px; font-size:0.9rem;">
+                        <p><strong>Q:</strong> Who was the first non-European to win the Ballon d'Or?</p>
+                        <p style="color:#9d174d;"><strong>Model:</strong> George Weah of AC Milan. <code style="background:#ec4899; color:#fff; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","2","Quotation")</code> <span style="color:#dc2626; font-weight:600;">[Second sentence missing tag]</span></p>
+                    </div>
+                </div>
+
+                <div class="feature-card" style="border-left: 6px solid #a78bfa;">
+                    <h3><i class="ph-duotone ph-map-pin"></i> Incorrect Localization</h3>
+                    <p>The model emits well-formed provenance tags, but the referenced indices don't actually contain the supporting evidence — the cited source is topically related but imprecise.</p>
+                    <div style="background:#f5f3ff; padding:14px; border-radius:10px; margin-top:12px; font-size:0.9rem;">
+                        <p><strong>Q:</strong> What is the main food of a koala?</p>
+                        <p style="color:#5b21b6;"><strong>Model:</strong> Eucalyptus leaves. <code style="background:#a78bfa; color:#fff; padding:2px 6px; border-radius:4px; font-size:0.82rem;">("0","1","Compression")</code> <span style="color:#dc2626; font-weight:600;">[Wrong — evidence is in Doc[1], Sen[1]]</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="figure figure-sm" style=" box-shadow:0 15px 35px -10px rgba(167,139,250,0.25);">
+                <img src="./Figure%207-A%20representative%20relation-type%20error.jpg" alt="Representative Relation-Type Error">
+                <div class="figure-caption">
+                    Figure 7: A representative relation-type error. The cited evidence is relevant, but the predicted provenance type does not match how the answer sentence is actually supported by the source — confusing Quotation with Compression.
+                </div>
+            </div>
+
+            <h3>Key Insight: The Reasoning Gap</h3>
+            <p>The heatmap (Figure 5) reveals a clear difficulty ordering: <strong>Quotation is easiest</strong>, while <strong>Compression and Inference are substantially harder</strong>. This indicates that models excel at surface-level copying but struggle with evidence abstraction, integration, and logical reasoning. GenProve achieves the strongest performance across all three relations, with its largest gains on the harder cases — reflecting improved evidence localization and relation typing where it matters most.</p>
+
+            <div class="figure figure-md" style=" box-shadow:0 15px 35px -10px rgba(34,211,238,0.25);">
+                <img src="./Figure%206-Learning%20dynamics%20during%20GRPO.jpg" alt="GRPO Training Dynamics">
+                <div class="figure-caption">
+                    Figure 6: Learning dynamics during GRPO alignment. Both component rewards (content similarity and provenance F1) increase and stabilize, indicating coordinated optimization of dual objectives rather than oscillation.
+                </div>
+            </div>
+        </section>
+
+        <section id="limitations">
+            <h2><span class="header-icon"><i class="ph-duotone ph-warning-octagon"></i></span> Limitations &amp; Future Work</h2>
+            <p>While GenProve establishes a new standard for fine-grained provenance, we identify three limitations to address in future work:</p>
+
+            <div class="feature-cards">
+                <div class="feature-card" style="border-left: 6px solid #f59e0b;">
+                    <h3><i class="ph-duotone ph-clock"></i> Inference Latency</h3>
+                    <p>Generating structured provenance triples inevitably increases the output token count compared to standard generation. Although essential for trustworthiness, this introduces a slight latency trade-off in real-time applications.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 6px solid #22d3ee;">
+                    <h3><i class="ph-duotone ph-globe"></i> Linguistic Scope</h3>
+                    <p>Our current ReFInE dataset and evaluation primarily focus on English. Extending the Quotation-Compression-Inference taxonomy to multilingual or cross-lingual settings remains an open avenue for research.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 6px solid #a78bfa;">
+                    <h3><i class="ph-duotone ph-magnifying-glass-minus"></i> Retrieval Dependency</h3>
+                    <p>Our framework focuses on the generation stage. Like all RAG systems, end-to-end performance is bounded by the quality of the retriever; if retrieved documents contain no relevant information, the model cannot generate valid provenance.</p>
+                </div>
+            </div>
+
+            <p style="margin-top:32px; padding:24px; background:linear-gradient(135deg, #ecfeff, #f5f3ff); border-radius:16px; font-size:1.05rem; border-left:6px solid var(--secondary-color);">
+                <strong>Looking Forward:</strong> We position ReFInE as a stepping stone towards <strong>self-auditing LLMs</strong> — models that not only generate knowledge but explicitly reason about the provenance of their own assertions. The performance gap between simple Quotation and complex Inference suggests that verifiable reasoning remains a frontier challenge for future research.
+            </p>
         </section>
 
         <section id="citation">
-            <h2><span class="header-icon"><i class="fas fa-book"></i></span> Citation</h2>
+            <h2><span class="header-icon"><i class="ph-duotone ph-books"></i></span> Citation</h2>
             <p>If you find our work helpful, please consider citing:</p>
-            <pre class="bibtex" style="background:#0f172a; color:#e0f2fe; padding:32px; border-radius:20px; font-family:monospace; overflow-x:auto; box-shadow:0 15px 35px -10px rgba(15,23,42,0.6);"><code>@article{wei2026genprove,
+            <pre class="bibtex" style="background:#0f172a; color:#e0f2fe; padding:32px; border-radius:20px; font-family:monospace; overflow-x:auto; box-shadow:0 15px 35px -10px rgba(15,23,42,0.6); position:relative;" id="bibtex-block"><code>@article{wei2026genprove,
   title={GenProve: Learning to Generate Text with Fine-Grained Provenance},
   author={Wei, Jingxuan and Wang, Xingyue and Liao, Yanghaoyu and Dong, Jie and Liu, Yuchen and Jia, Caijun and Yu, Bihui and Zhu, Junnan},
   journal={arXiv preprint arXiv:2601.04932},
   year={2026}
-}</code></pre>
+}</code><button onclick="navigator.clipboard.writeText(document.getElementById('bibtex-block').innerText)" style="position:absolute;top:16px;right:16px;background:var(--accent-color);color:#0f172a;border:none;padding:10px 16px;border-radius:9999px;cursor:pointer;font-weight:700;font-size:0.85rem;" title="Copy to clipboard"><i class="ph-duotone ph-clipboard-text" style="font-size:1.2rem;"></i></button></pre>
         </section>
 
         <footer>
-            <p>Project Page for GenProve • Created in 2026 • <i class="fas fa-heart" style="color:#ec4899;"></i> Made with vibrant AI passion</p>
+            <p style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">GenProve</p>
+            <p>Learning to Generate Text with Fine-Grained Provenance • 2026</p>
         </footer>
     </div>
 
